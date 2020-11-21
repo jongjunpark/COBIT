@@ -21,7 +21,7 @@
             <i v-for="(off, index) in (5-heart)" :key="`off-${index}`" class="far fa-heart"></i>
           </div>
         </div>
-        <unity class="unity" style="width:100%; height:100%;" src="free/Build/free.json" unityLoader="free/Build/UnityLoader.js" ref="myInstance" :hideFooter="true"></unity>
+        <!-- <unity class="unity" style="width:100%; height:100%;" src="free/Build/free.json" unityLoader="free/Build/UnityLoader.js" ref="myInstance" :hideFooter="true"></unity> -->
       </div>
       <div class="code-box" @drop="drop" @dragover="dragover">  
           <!-- <div class="block-menu-bar">
@@ -95,7 +95,7 @@
 </template>
 
 <script>
-import Unity from 'vue-unity-webgl'
+// import Unity from 'vue-unity-webgl'
 import FailModal from '../components/FailModal.vue';
 import { mapMutations } from 'vuex';
 import axios from 'axios';
@@ -160,12 +160,12 @@ export default {
         {
           num:9,
           marginleft:'10px',class:'',overMe:'none',position:'absolute',marginTop:'525px',
-          index:8,x:0,y:0,son:-1,onPlayBtn:false,loop:1,overmeFor:false
+          index:9,x:0,y:0,son:-1,onPlayBtn:false,loop:1,overmeFor:false
         },
         {
           num:10,
           marginleft:'10px',class:'',overMe:'none',position:'absolute',marginTop:'580px',
-          index:8,x:0,y:0,son:-1,onPlayBtn:false,loop:1,overmeFor:false
+          index:10,x:0,y:0,son:-1,onPlayBtn:false,loop:1,overmeFor:false
         }
       ],
       moves:[
@@ -270,7 +270,7 @@ export default {
     }
   },
   components: {
-    Unity,
+    // Unity,
     FailModal,
   },
   computed: {
