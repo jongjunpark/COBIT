@@ -302,233 +302,154 @@ export default {
   watch: {
   },
   methods: {
-     ...mapMutations([]),
-     blockmouseover(m,event){
+    blockmouseover(m,event){
       let posX = event.pageX;
       let posY = event.pageY;
-      // console.log(event.target);
-      // console.log(posX + ',' + posY)
-      // // console.log(event.target);
-      // event.dataTransfer.effectAllowed = 'copyMove';
-      // event.dataTransfer.dropEffect = "copy";
       this.targetdiv = event.target;
       this.distX = event.srcElement.offsetLeft - posX;
       this.distY = event.srcElement.offsetTop - posY;
-      // console.log(this.distX + ',' + this.distY)
       this.selectnum = event.target.className;
       this.isAdded = false;
       this.isOnMove = true;//움직이고있다.
-      // var selectedNum = this.selectnum;
-      // var selectedNum = this.selectnum.split("block")[2].split(' ')[0]
       var selectedNum = m.num;
-      // console.log(selectedNum);
-      // if(Number(selectedNum)==7||Number(selectedNum)==8){
-        // this.underfor.push({parentNum:this.resultStep.length,sonNum:0,x:posX + this.distX,y:posY + this.distY+45,overMe:false})
-      this.resultStep.push({num:Number(selectedNum),marginleft:'10px',marginTop:this.defaultStep[selectedNum].marginTop,class:'',class2:'',overMe:'none',position:'absolute',index:this.resultStep.length,x:posX + this.distX,y:posY + this.distY,son:-1,onPlayBtn:false,loop:1,choiceNum:false,onclick:false,forindex:this.fori,forson:-1});
-        this.fori+=1;
-      // }else if(Number(selectedNum)==8){
-      //   this.resultStep.push({num:Number(selectedNum),marginleft:posX + this.distX + 10 +'px',marginTop:posY + this.distY + 10 + 'px',class:'',overMe:'none',position:'absolute',index:this.resultStep.length,x:posX + this.distX,y:posY + this.distY,son:-1,onPlayBtn:false,loop:1,choiceNum:false,ifindex:this.ifi,ifson:-1});
-      //   this.ifi+=1;
-      // }else{
-      //   this.resultStep.push({num:Number(selectedNum),marginleft:'10px',marginTop:this.defaultStep[selectedNum].marginTop,class:'',overMe:'none',position:'absolute',index:this.resultStep.length,x:posX + this.distX,y:posY + this.distY,son:-1,onPlayBtn:false,loop:1,choiceNum:false});
-      // }
-     },
-     selectLoopNum(loopnum,mynum){
-       this.resultStep[this.targetdivNum].loop = loopnum;
-       this.resultStep[this.targetdivNum].choiceNum = false;
-       this.targetdivNum = mynum;
-     },
-     choiceLoopNum(mynum){
-       this.resultStep[this.targetdivNum].choiceNum = true;
-       this.targetdivNum = mynum;
-     },
-     clickForblock(m,index){
-       if(m.num==7 ||m.num==8 ||index==101){
-         if(m.onclick){
-           m.onclick = false;
-           m.class = ''
-           event.target.style.backgroundColor = 'orange'
-         }else{
-           m.onclick = true;
-           m.class = 'activate'
-           event.target.style.backgroundColor = 'orangered'
-         }
-       }
-     },
-     deleteAll(){
-       this.resultStep = [];
-     },
+      this.resultStep.push({num: Number(selectedNum),
+                            marginleft: '10px', marginTop: this.defaultStep[selectedNum].marginTop,
+                            class: '', class2: '',overMe: 'none', position: 'absolute', index: this.resultStep.length,
+                            x: posX + this.distX,
+                            y: posY + this.distY,
+                            son: -1, onPlayBtn: false, loop: 1,
+                            choiceNum: false, onclick: false, forindex: this.fori, forson: -1
+                          });
+      this.fori += 1;
+    },
+    selectLoopNum(loopnum,mynum){
+      this.resultStep[this.targetdivNum].loop = loopnum;
+      this.resultStep[this.targetdivNum].choiceNum = false;
+      this.targetdivNum = mynum;
+    },
+    choiceLoopNum(mynum){
+      this.resultStep[this.targetdivNum].choiceNum = true;
+      this.targetdivNum = mynum;
+    },
+    clickForblock(m,index){
+      if (m.num==7 || m.num==8 || index==101) {
+        if (m.onclick) {
+          m.onclick = false;
+          m.class = ''
+          event.target.style.backgroundColor = 'orange'
+        } else {
+          m.onclick = true;
+          m.class = 'activate'
+          event.target.style.backgroundColor = 'orangered'
+        }
+      }
+    },
+    deleteAll(){
+      this.resultStep = [];
+    },
     clickPlayBtn(){
       var tempson = this.playson;
-      // console.log(this.resultStep.length + '여기')
-      var resultBlocknum=0;  //최종 블록 수
+      var resultBlocknum = 0;  //최종 블록 수
       var delNode = [];
       var forlist = [];
       this.code = [];
       this.resultmoves = [];
-      // console.log(this.resultStep)
-      while(tempson != -1){
-        resultBlocknum +=1;
-        this.code.push({move:this.resultStep[tempson],loop:this.resultStep[tempson].loop});
-        // if(this.resultStep[tempson].num!=7){
+      while (tempson != -1) {
+        resultBlocknum += 1;
+        this.code.push({move: this.resultStep[tempson], loop: this.resultStep[tempson].loop});
           delNode.push(this.resultStep[tempson].index);
-          if(this.resultStep[tempson].num==7){
+          if (this.resultStep[tempson].num == 7) {
             var tempforson = this.resultStep[tempson].forson;
             var ForresultString = String(this.resultStep[tempson].loop);
-            while(tempforson !=-1){
-              this.code.push({move:this.resultStep[tempforson],loop:this.resultStep[tempson].loop});
-              resultBlocknum +=1;
-              ForresultString+=',';
-              // console.log(this.resultStep);
-              // console.log(this.resultStep[tempforson]);
-              // console.log("tempforson: "+tempforson);
+            while (tempforson !=-1) {
+              this.code.push({move: this.resultStep[tempforson], loop: this.resultStep[tempson].loop});
+              resultBlocknum += 1;
+              ForresultString += ',';
               ForresultString += this.moves[this.resultStep[tempforson].num].move;
-              if(this.resultStep[tempforson].num==8){
-                ForresultString+='IfTrap';
+              if (this.resultStep[tempforson].num == 8) {
+                ForresultString += 'IfTrap';
                 var tempifson = this.resultStep[tempforson].forson;
-                while(tempifson!=-1){
-                  ForresultString+=';';
-                  // console.log(this.resultmoves[this.resultStep[tempifson].num]);
-                  ForresultString+=this.moves[this.resultStep[tempifson].num].move;
+                while (tempifson != -1) {
+                  ForresultString += ';';
+                  ForresultString += this.moves[this.resultStep[tempifson].num].move;
                   tempifson = this.resultStep[tempifson].son;
                 }
                 tempforson = tempifson
-                // console.log(ForresultString);
-              }else if(this.resultStep[tempforson].num!=7||this.resultStep[tempforson].son!=-1){
+              } else if (this.resultStep[tempforson].num!=7 || this.resultStep[tempforson].son!=-1) {
                 tempforson = this.resultStep[tempforson].son;
-              }else{
+              } else {
                 tempforson = this.resultStep[tempforson].forson;
               }
             }
             this.resultStep[tempson].forindex = forlist.length;
-            // // console.log(ForresultString);
             forlist.push(ForresultString);
           }
-          this.resultmoves.push({move:this.resultStep[tempson],loop:this.resultStep[tempson].loop});
+          this.resultmoves.push({move: this.resultStep[tempson], loop: this.resultStep[tempson].loop});
           tempson = this.resultStep[tempson].son;
           this.blockNum = resultBlocknum
       }
-
-      // // console.log("resultStep["+0+"]="+this.resultStep[0].son);
-      this.resultmoves.forEach( step => {
-        if(step.move.num!=7){
+      this.resultmoves.forEach(step => {
+        if (step.move.num!=7) {
           this.$refs.myInstance.message('JavascriptHook',this.moves[step.move.num].move);
-          // // console.log(this.moves[step.move.num].move);
-        }else{
+        } else {
           this.$refs.myInstance.message('JavascriptHook',this.moves[step.move.num].move,forlist[step.move.forindex]);
-          // // console.log(this.moves[step.move.num].move+','+forlist[step.move.forindex]);
         }
       });
-     for(var i=0; i<this.resultmoves.length;i++){
-       this.history.push(this.resultmoves[i].move);
-     }
-    
-     
-     this.resultStep = [];
-     this.playClass.background='#1dc360';
-     this.$refs.myInstance.message('JavascriptHook',"Go");
-    //  // console.log(delNode)
-    //  for(var j=0; j<delNode.length;j++){
-    //    this.resultStep.pop(j);
-    //  }
+      for(var i=0; i<this.resultmoves.length; i++){
+        this.history.push(this.resultmoves[i].move);
+      }
+      this.resultStep = [];
+      this.playClass.background='#1dc360';
+      this.$refs.myInstance.message('JavascriptHook',"Go");
       this.playson = -1;
       this.alreadyOverPlay = false;
-      // // console.log(this.resultmoves);
     },
-    // clickHint(){
-    //   if(this.clickhint){
-    //     this.showhint = 'none';
-    //     this.clickhint = false;
-    //   }else{
-    //     this.showhint = 'block';
-    //     this.clickhint = true;
-    //   }
-    // },
     getNeighbor(event){
-      var x = this.distX+event.pageX;
-      var y = this.distY+event.pageY;
+      var x = this.distX + event.pageX;
+      var y = this.distY + event.pageY;
       var playtarget = document.getElementById('play');
       const playRect = playtarget.getBoundingClientRect();
-
-      // for(var f=0;f<this.underfor.length;f++){
-      //   if(x>this.underfor[f].x&&x<this.underfor[f].x+50&&y>this.underfor[f].y&&y<this.underfor[f].y+30){
-      //     this.underfor[f].overMe=true;
-      //   }else{
-      //     this.underfor[f].overMe=false;
-      //   }
-      // }
-      // // console.log(x+','+y)
-      // // console.log("underfor[0]"+this.underfor[0].x+" "+this.underfor[0].y)
-      
-      if(x<playRect.right+this.distX&&x>playRect.left+this.distX&&y<playRect.bottom+this.distY&&playRect.top+this.distY){
-        this.playClass={background:'green',show:'block'};
-      }else{
-        this.playClass={background:'#1dc360',show:'none'};
+      if ((x < playRect.right+this.distX) && (x > playRect.left+this.distX) && (y < playRect.bottom+this.distY) && (y > playRect.top+this.distY)) {
+        this.playClass = {background: 'green', show: 'block'};
+      } else {
+        this.playClass = {background: '#1dc360', show: 'none'};
       }
       var checkchilds = [];
-       if(this.resultStep[this.targetdivNum].son!=-1){
-         var checkson = this.resultStep[this.targetdivNum].son;
-         while(checkson!=-1){
-           checkchilds.push(checkson);
-           checkson = this.resultStep[checkson].son;
-         }
-       }
-      
-      // underForblocksPositions.forEach(step=>{
-      //   var stepx = step.x;
-      //   var stepy = step.y;
-      //   if(x<stepx+step.width&&x>stepx&&y>stepy&&y<stepy+step.height){
-      //     var tempclass = 
-      //   }
-      // });
-
-     this.resultStep.forEach( step => {
+      if (this.resultStep[this.targetdivNum].son != -1) {
+        var checkson = this.resultStep[this.targetdivNum].son;
+        while (checkson != -1) {
+          checkchilds.push(checkson);
+          checkson = this.resultStep[checkson].son;
+        }
+      }
+      this.resultStep.forEach(step => {
       var stepx = step.x;
       var stepy = step.y;
-       if(this.resultmoves.includes(step)){
-          if(step.index!=this.targetdivNum&&(x<stepx+20&&x>stepx-20&&y<stepy+65&&y>stepy+30)){
-            step.class = 'overMe';
-            step.overMe = 'block';
-          }else{
-            step.class = '';
-            step.overMe = 'none';
-          }
+      if (this.resultmoves.includes(step)) {
+        if ((step.index != this.targetdivNum) && ((x < stepx+20) && (x > stepx-20) && (y < stepy+65) && (y > stepy+30))) {
+          step.class = 'overMe';
+          step.overMe = 'block';
+        } else {
+          step.class = '';
+          step.overMe = 'none';
         }
-        else{
-          if(step.index!=this.targetdivNum&&!checkchilds.includes(step.index)&&(x<stepx+20&&x>stepx-20&&y<stepy+25&&y>stepy-10)){
-            step.class = 'overMe';
-            step.overMe = 'block';
-          }else{
-            step.class = '';
-            step.overMe = 'none';
-          }
+      } else {
+        if ((step.index!=this.targetdivNum) && (!checkchilds.includes(step.index)) && ((x<stepx+20) && (x>stepx-20) && (y<stepy+25) && (y>stepy-10))) {
+          step.class = 'overMe';
+          step.overMe = 'block';
+        } else {
+          step.class = '';
+          step.overMe = 'none';
         }
+      }
      });
- 
     },
     deleteNode(event){
       event.target.deleteNode();
-    },
-    // onMove() {
-    //   this.isMove = true; this.isObstacle = false
-    //   // const MOVE = document.querySelector('.move-menu');
-    //   // const OBSTACLE = document.querySelector('.obstacle-menu');
-    //   // MOVE.classList.add('on-menu-bar');
-    //   // OBSTACLE.classList.remove('on-menu-bar');
-    // },
-    // onObstacle() {
-    //   this.isObstacle = true; this.isMove = false
-    //   const MOVE = document.querySelector('.move-menu');
-    //   const OBSTACLE = document.querySelector('.obstacle-menu');
-    //   // MOVE.classList.remove('on-menu-bar');
-    //   // OBSTACLE.classList.add('on-menu-bar');
-    // },
-                                              
+    },                               
     dragstart(mynum,event) {
       this.targetdivNum = mynum;
-      // // console.log(event.target);
       this.targetdiv = event.target;
-      // event.target.style.position = 'absolute';
       let posX = event.pageX;
       let posY = event.pageY;
       this.distX = event.srcElement.offsetLeft - posX;
@@ -541,20 +462,18 @@ export default {
       event.preventDefault();
       //마우스가 움직이면서 계속 마우스 위치를 가져온다.
       this.getNeighbor(event);
-
     },
     updateLink(){
       var parent = this.targetdivNum;
-        var son = this.resultStep[parent].son;
-        while(son != -1){
-          this.resultStep[son].x = Number(this.resultStep[parent].x);
-          this.resultStep[son].y = Number(this.resultStep[parent].y)+47;
-          parent = son;
-          son = this.resultStep[son].son;
-        }
+      var son = this.resultStep[parent].son;
+      while(son != -1){
+        this.resultStep[son].x = Number(this.resultStep[parent].x);
+        this.resultStep[son].y = Number(this.resultStep[parent].y)+47;
+        parent = son;
+        son = this.resultStep[son].son;
+      }
     },
     drop(event) {
-      // console.log(this.resultmoves)
       const target = document.getElementById('play-box');
       const clientRect = target.getBoundingClientRect(); // DomRect 구하기 (각종 좌표값이 들어있는 객체)
       const relativeLeft = clientRect.left;
@@ -565,22 +484,16 @@ export default {
       let posY = event.pageY;
       this.onMove = false ; //블록움직임이 끝났다.
       if (posX >= relativeLeft && posX <= relativeRight) {
-          this.resultStep[this.targetdivNum].marginleft = posX + this.distX + 'px';
-          this.resultStep[this.targetdivNum].marginTop = posY + this.distY + 'px';
-          this.resultStep[this.targetdivNum].x = posX + this.distX;
-          this.resultStep[this.targetdivNum].y = posY + this.distY;
-          this.updateLink();
-          // if(this.resultStep[this.targetdivNum].num == 7){
-          //   this.underfor[this.resultStep[this.targetdivNum].forindex].x = this.resultStep[this.targetdivNum].x;
-          //   this.underfor[this.resultStep[this.targetdivNum].forindex].y = this.resultStep[this.targetdivNum].y+50;
-          // }
-          
-        // // console.log(event);
-        if(this.playClass.show=='block'){
-          if(!this.alreadyOverPlay){
+        this.resultStep[this.targetdivNum].marginleft = posX + this.distX + 'px';
+        this.resultStep[this.targetdivNum].marginTop = posY + this.distY + 'px';
+        this.resultStep[this.targetdivNum].x = posX + this.distX;
+        this.resultStep[this.targetdivNum].y = posY + this.distY;
+        this.updateLink();
+        if (this.playClass.show=='block') {
+          if (!this.alreadyOverPlay) {
             this.playson = this.targetdivNum;
             document.getElementById('underplay').appendChild(this.targetdiv);
-          }else{
+          } else {
             var originalPlayson = this.playson;
             this.resultStep[this.targetdivNum].son = originalPlayson;
             this.playson = this.targetdivNum;
@@ -589,96 +502,77 @@ export default {
           this.resultStep[this.targetdivNum].position = 'relative'; // 수정
           this.resultStep[this.targetdivNum].marginleft = '0px';
           this.resultStep[this.targetdivNum].marginTop = '0px';
-          if(!this.alreadyOverPlay){
-              this.alreadyOverPlay = true;
-            }
+          if (!this.alreadyOverPlay) {
+            this.alreadyOverPlay = true;
+          }
         }
-
         var content = window.document.getElementsByClassName("overMe");
-        if(content.length!=0){
+        if (content.length != 0) {
           this.resultStep[this.targetdivNum].marginleft = '0px';
           this.resultStep[this.targetdivNum].marginTop = '0px';
           this.resultStep[this.targetdivNum].position = 'unset';
-          // console.log(content[0]);
-          
         }
         // var original_son = -1;
         //x와 y를 움직이기
 
-        this.resultStep.some( step => {
-          if(step.overMe=='block' || step.class=='overMe'){
-            if(step.num!=7 && step.num!=8){
-                content[0].nextSibling.after(this.targetdiv);
-                var os = this.resultStep[step.index].son;
-                this.resultStep[step.index].son = this.targetdivNum;
-                // this.resultStep[this.targetdivNum].son = os;
-                var parent = step.index;
-                var son = this.targetdivNum;
-                var lastson = son;
-                while(son != -1){
-                  lastson = son;
+        this.resultStep.some(step => {
+          if (step.overMe == 'block' || step.class == 'overMe') {
+            if (step.num != 7 && step.num != 8) {
+              content[0].nextSibling.after(this.targetdiv);
+              var os = this.resultStep[step.index].son;
+              this.resultStep[step.index].son = this.targetdivNum;
+              var parent = step.index;
+              var son = this.targetdivNum;
+              var lastson = son;
+              while (son != -1) {
+                lastson = son;
+                this.resultStep[son].x = Number(this.resultStep[parent].x);
+                this.resultStep[son].y = this.resultStep[parent].y + 47;
+                parent = son;
+                son = this.resultStep[son].son;
+              }
+              this.resultStep[lastson].son = os;
+            } else {
+              var underForblockParent = content[0].parentNode;
+              var underForblock = underForblockParent.getElementsByClassName("underForblock")[0];
+              if (!step.onclick) {
+              underForblock.nextSibling.after(this.targetdiv);
+              os = this.resultStep[step.index].son;
+              this.resultStep[step.index].son = this.targetdivNum;
+              parent = step.index;
+              son = this.targetdivNum;
+                while (son != -1) {
                   this.resultStep[son].x = Number(this.resultStep[parent].x);
                   this.resultStep[son].y = this.resultStep[parent].y+47;
                   parent = son;
                   son = this.resultStep[son].son;
                 }
-                this.resultStep[lastson].son = os;
-              }else{
-                var underForblockParent = content[0].parentNode;
-                var underForblock = underForblockParent.getElementsByClassName("underForblock")[0];
-                // console.log(underForblock);
-                if(!step.onclick){
-                underForblock.nextSibling.after(this.targetdiv);
-                os = this.resultStep[step.index].son;
-                this.resultStep[step.index].son = this.targetdivNum;
-                // this.resultStep[this.targetdivNum].son = os;
+              } else {
+                underForblock.nextSibling.before(this.targetdiv);
+                os = this.resultStep[step.index].forson;
+                this.resultStep[step.index].forson = this.targetdivNum
+                this.resultStep[this.targetdivNum].forson = os;
                 parent = step.index;
                 son = this.targetdivNum;
-                 while(son != -1){
-                    this.resultStep[son].x = Number(this.resultStep[parent].x);
-                    this.resultStep[son].y = this.resultStep[parent].y+47;
-                    parent = son;
-                    son = this.resultStep[son].son;
-                  }
-                }else{
-                  // console.log("여기여기")
-                  underForblock.nextSibling.before(this.targetdiv);
-                  os = this.resultStep[step.index].forson;
-                  this.resultStep[step.index].forson = this.targetdivNum
-                  this.resultStep[this.targetdivNum].forson = os;
-
-
-                parent = step.index;
-                  son = this.targetdivNum;
-                  while(son != -1){
-                  // console.log("p:"+parent+" s:"+son);
-                    this.resultStep[son].x = Number(this.resultStep[parent].x);
-                    this.resultStep[son].y = this.resultStep[parent].y+47;
-                    parent = son;
-                    son = this.resultStep[son].forson;
-
-                  }
-                  step.onclick = false;
-                  setTimeout(() => {
-                    step.onclick = true;
-                  }, 10);
-
+                while (son != -1) {
+                  this.resultStep[son].x = Number(this.resultStep[parent].x);
+                  this.resultStep[son].y = this.resultStep[parent].y+47;
+                  parent = son;
+                  son = this.resultStep[son].forson;
                 }
-
-              
-          }
+                step.onclick = false;
+                setTimeout(() => {
+                  step.onclick = true;
+                }, 10);
+              }
+            }
             // // console.log("원래"+step.index+"의 son "+this.resultmoves[step.index].son+"을 "+this.targetdivNum+"로 바꿈");
             // // console.log(this.targetdivNum+"의 son을"+os+"로 바꿈");
             step.overMe = 'none';
-            // console.log()
           }
-          if(step.overMe=='block' || step.class=='overMe')return;
-          // console.log(this.resultStep);
-          
-     });
-    //  this.resultStep[this.targetdivNum].son = original_son;
-    // console.log(this.resultStep);
-     this.playClass.show='none';
+          if (step.overMe == 'block' || step.class == 'overMe') return;   
+        });
+        this.playClass.show = 'none';
       }
     },
     reStart() {
